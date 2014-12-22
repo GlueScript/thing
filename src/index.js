@@ -2,7 +2,7 @@ var express = require('express'),
     app = express(),
     winston = require('winston'),
     bodyParser = require('body-parser'),
-    store = require('./lib/store');
+    Store = require('./lib/store');
 
 /*
 * Get winston to log uncaught exceptions and to not exit
@@ -16,11 +16,13 @@ var logger = new winston.Logger({
   exitOnError: false
 });
 
+var router = express.Router();
+var url = 'mongodb://' + process.env.MONGO_HOST + '/thing';
+var store = new Store(url);
+
 app.use(bodyParser.text({type : 'text/*', limit: '1024kb'}));
 app.use(bodyParser.text({type : 'application/xml', limit: '1024kb'}));
 app.use(bodyParser.json({limit: '1024kb'}));
-
-var router = express.Router();
 
 router.use(function(req, res, next) {
     logger.log('info', '%s %s', req.method, req.url);
@@ -33,6 +35,7 @@ app.get('*', function (req, res) {
     store.get(req.url, function(err, result) {
         if (!err) {
             // set content type header of response
+            logger.log('info', result);
             res.send(result.doc);
         } else {
             res.status(404).send(req.url + ' not found');
