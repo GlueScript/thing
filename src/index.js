@@ -34,16 +34,18 @@ app.use('/', router);
 app.get('*', function (req, res) {
     store.get(req.url, function(err, result) {
         if (!err) {
-            // set content type header of response
             logger.log('info', result);
+            res.set({'Content-Type': result.type});
             res.send(result.doc);
         } else {
+            res.set({'Content-Type': 'text/plain'});
             res.status(404).send(req.url + ' not found');
         }
     });
 });
 
 app.put('*', function (req, res) {
+    // add should overwrite existing documents for this url
     store.add(
         {doc: req.body,
          type: req.headers['content-type'],
