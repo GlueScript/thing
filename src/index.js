@@ -23,20 +23,28 @@ app.use(bodyParser.json({limit: '1024kb'}));
 var router = express.Router();
 
 router.use(function(req, res, next) {
-    console.log('%s %s %s', req.method, req.url, req.path);
+    logger.log('info', '%s %s', req.method, req.url);
     next();
 });
 
 app.use('/', router);
 
 app.get('*', function (req, res) {
+    store.get(req.url, function(err, result) {
+        if (!err) {
+            // set content type header of response
+            res.send(result.doc);
+        } else {
+            res.status(404).send(req.url + ' not found');
+        }
+    });
 });
 
 app.put('*', function (req, res) {
     store.add(
         {doc: req.body,
          type: req.headers['content-type'],
-         path: req.path},
+         url: req.url},
         function (err, result) {
             if (!err) {
                 res.json(result);
