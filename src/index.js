@@ -29,12 +29,12 @@ router.use(function(req, res, next) {
 
 app.use('/', router);
 
-app.get('/', function (req, res) {
+app.get('*', function (req, res) {
 });
 
-app.put('/:path', function (req, res) {
+app.put('*', function (req, res) {
     store.add(
-        {doc:req.body,
+        {doc: req.body,
          type: req.headers['content-type'],
          path: req.path},
         function (err, result) {
@@ -47,10 +47,10 @@ app.put('/:path', function (req, res) {
     );
 });
 
-app.post('/', function(req, res) {
+app.post('*', function(req, res) {
 });
 
-app.delete('/', function(req, res) {
+app.delete('*', function(req, res) {
 });
 
 var PORT = process.env.PORT || 80;
