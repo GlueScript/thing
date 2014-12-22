@@ -1,11 +1,11 @@
 {
-  "name": "things",
+  "name": "thing",
   "version": "0.4.0",
   "description": "Stores things at uris",
   "main": "index.js",
   "repository": {
     "type": "git",
-    "url": "git@github.com:timothy-r/things.git"
+    "url": "git@github.com:timothy-r/thing.git"
   },
   "scripts": {
     "test": "./node_modules/mocha/bin/mocha ../test"
