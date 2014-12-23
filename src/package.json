@@ -1,7 +1,7 @@
 {
   "name": "thing",
   "version": "0.1.0",
-  "description": "Stores things at uris",
+  "description": "Stores documents at uris",
   "main": "index.js",
   "repository": {
     "type": "git",

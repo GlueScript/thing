@@ -20,7 +20,7 @@ Store.prototype.get = function(url, callback) {
                     console.log('info: Retrieved document.');
                 } else {
                     console.log('error: No document found.');
-                    err = err ? err : 'not found';
+                    err = err || 'Not found';
                 }
                 db.close();
                 callback(err, result);
