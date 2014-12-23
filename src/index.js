@@ -17,7 +17,9 @@ var logger = new winston.Logger({
 });
 
 var router = express.Router();
-var store = new Store('mongodb://' + process.env.MONGO_HOST + '/' + process.env.MONGO_DB);
+var store = new Store(
+    'mongodb://' + process.env.MONGO_HOST + '/' + process.env.MONGO_DB,
+    logger);
 
 app.use(bodyParser.text({type : 'text/*', limit: '1024kb'}));
 app.use(bodyParser.text({type : 'application/xml', limit: '1024kb'}));
