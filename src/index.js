@@ -17,8 +17,7 @@ var logger = new winston.Logger({
 });
 
 var router = express.Router();
-var url = 'mongodb://' + process.env.MONGO_HOST + '/thing';
-var store = new Store(url);
+var store = new Store('mongodb://' + process.env.MONGO_HOST + '/' + process.env.MONGO_DB);
 
 app.use(bodyParser.text({type : 'text/*', limit: '1024kb'}));
 app.use(bodyParser.text({type : 'application/xml', limit: '1024kb'}));
@@ -36,9 +35,11 @@ app.get('*', function (req, res) {
         if (!err) {
             logger.log('info', result);
             res.set({'Content-Type': result.type});
-            res.send(result.doc);
+            res.set({'Content-Language': result.lang});
+            res.send(result.body);
         } else {
             res.set({'Content-Type': 'text/plain'});
+            res.set({'Content-Language': 'en'});
             res.status(404).send(req.url + ' not found');
         }
     });
@@ -47,14 +48,15 @@ app.get('*', function (req, res) {
 app.put('*', function (req, res) {
     // add should overwrite existing documents for this url
     store.add(
-        {doc: req.body,
+        {body: req.body,
          type: req.headers['content-type'],
+         lang: req.headers['content-language'] || 'en',
          url: req.url},
         function (err, result) {
             if (!err) {
                 res.json(result);
             } else {
-                res.status(500).send({error: err});
+                res.status(500).json({error: err});
             }
         }
     );

@@ -9,6 +9,7 @@ RUN apt-get update -qq && \
 
 EXPOSE 80
 
+# set MONGO_HOST (ip address and port ) and MONGO_DB (db name) env vars before running this container
 CMD ["nodejs", "/home/app/index.js"]
 
 # Move files into place

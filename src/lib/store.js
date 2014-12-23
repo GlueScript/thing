@@ -1,10 +1,9 @@
 var MongoClient = require('mongodb').MongoClient;
 
 // set the db name from an env var too eg. MONGO_DB
-//var url = 'mongodb://' + process.env.MONGO_HOST + '/thing';
 
 /*
- * Provides access to 'things'
+ * Provides access to documents
  */
 function Store(url) {
     this.url = url;
@@ -48,6 +47,14 @@ Store.prototype.add = function(doc, callback) {
             callback(err, null);
         }
      });
+};
+
+/**
+ * Remove documents with a url property matching this url
+ * allow for variations on a single url
+ */
+Store.prototype.delete = function(url, callback) {
+
 };
 
 Store.prototype.exec = function(func) {
