@@ -1,19 +1,17 @@
-var MongoClient = require('mongodb').MongoClient;
+var MongoClient = require('mongodb').MongoClient,
+    logger = require('./logger');
 
 /*
  * Provides access to documents
  */
-function Store(url, logger) {
+function Store(url, collection) {
     this.url = url;
-    this.logger = logger;
-    // pass collection name to constructor too
-    this.collection = 'thing';
+    this.collection = collection;
 };
 
 module.exports = Store;
 
 Store.prototype.get = function(url, callback) {
-    var logger = this.logger
      this.exec(function(err, db, collection) {
         if (!err) {
             collection.findOne({url: url}, function (err, result) {
@@ -33,7 +31,6 @@ Store.prototype.get = function(url, callback) {
 };
 
 Store.prototype.add = function(doc, callback) {
-    var logger = this.logger
      this.exec(function(err, db, collection) {
         if (!err) {
             collection.insert(doc, function (err, result) {
@@ -61,7 +58,6 @@ Store.prototype.delete = function(url, callback) {
 
 Store.prototype.exec = function(func) {
     var store = this;
-    var logger = this.logger
     MongoClient.connect(this.url, function(err, db) {
         if (!err) {
             logger.log('info', 'Connected to server at ' + store.url);
