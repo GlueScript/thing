@@ -38,11 +38,12 @@ app.get('*', function (req, res) {
 app.put('*', function (req, res) {
     // add should overwrite existing documents for this url
     store.add(
-        {body: req.body,
+        req.url,
+        {
+         body: req.body,
          type: req.headers['content-type'],
-         lang: req.headers['content-language'] || 'en',
-         url: req.url},
-        function (err, result) {
+         lang: req.headers['content-language'] || 'en'},
+         function (err, result) {
             if (!err) {
                 res.json(result);
             } else {

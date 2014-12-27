@@ -11,10 +11,10 @@ function Store(url, collection) {
 
 module.exports = Store;
 
-Store.prototype.get = function(url, callback) {
+Store.prototype.get = function(id, callback) {
      this.exec(function(err, db, collection) {
         if (!err) {
-            collection.findOne({url: url}, function (err, result) {
+            collection.findOne({id: id}, function (err, result) {
                 if (!err && result) {
                     logger.log('info', 'Retrieved document.');
                 } else {
@@ -30,9 +30,10 @@ Store.prototype.get = function(url, callback) {
      });
 };
 
-Store.prototype.add = function(doc, callback) {
+Store.prototype.add = function(id, doc, callback) {
      this.exec(function(err, db, collection) {
         if (!err) {
+            doc['id'] = id;
             collection.insert(doc, function (err, result) {
                 if (!err) {
                     logger.log('info', 'Inserted document.');
@@ -49,10 +50,10 @@ Store.prototype.add = function(doc, callback) {
 };
 
 /**
- * Remove documents with a url property matching this url
- * allow for variations on a single url
+ * Remove documents with a id property matching this id
+ * allow for variations on a single id
  */
-Store.prototype.delete = function(url, callback) {
+Store.prototype.delete = function(id, callback) {
 
 };
 
